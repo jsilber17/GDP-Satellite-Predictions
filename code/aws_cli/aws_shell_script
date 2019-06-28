@@ -1,4 +1,0 @@
-#AWS CLI SSSSSSSSSS
-
-#upload Directory to AWS
-aws s3 sync Sanaa_Images s3://capstone2/
