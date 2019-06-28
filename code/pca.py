@@ -11,7 +11,7 @@ def scale_X_data(processed_data_function):
 
     # Isolate X data from processed data
     df = processed_data_function
-    index = pd.DataFrame(df.iloc[:, 0])
+    index = pd.DataFrame(df.iloc[:, 0]
     df = df.set_index(df.columns[0])
     X = df.iloc[:, 0:-1]
     y = df.iloc[:, -1]
