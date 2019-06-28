@@ -3,7 +3,8 @@ import numpy as np
 import pandas as pd
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
-
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 def scale_X_data(processed_data_function):
     """ Standardizes X data (that is called by a function that processes the data)
@@ -11,7 +12,7 @@ def scale_X_data(processed_data_function):
 
     # Isolate X data from processed data
     df = processed_data_function
-    index = pd.DataFrame(df.iloc[:, 0]
+    index = pd.DataFrame(df.iloc[:, 0])
     df = df.set_index(df.columns[0])
     X = df.iloc[:, 0:-1]
     y = df.iloc[:, -1]
@@ -48,43 +49,39 @@ def optimal_principal_components(X_scaled, y, index, var_threshold):
     return pc_df
 
 
+def plot_scree(X_scaled):
+    """ Plot a Scree plot to confirm the optimal number of Principal Components
+        from previous calculations"""
+
+    # Fit already standardized X data to a vanilla PCA model
+    pca = PCA()
+    X_pca = pca.fit(X_scaled)
+
+    #Plot scree plot
+    sns.set_style("white")
+    fig, ax = plt.subplots(figsize=(8, 8))
+    sns.lineplot(x=np.arange(len(pca.explained_variance_ratio_)), y=np.cumsum(pca.explained_variance_ratio_))
+    sns.lineplot(x=np.arange(len(pca.explained_variance_ratio_)), y=0.9)
+    ax.set_title('Scree Plot For Principal Components', size=20, weight='bold')
+    ax.set_ylabel('Proportion of Explained Variance', size=18)
+    ax.set_xlabel('Number of Principal Components', size=18)
+    ax.legend(labels=(['Cumulative Sum of Variance', 'Variance Threshold']), loc='lower right', prop={'size': 15})
+    plt.show()
+
+
 def main():
     # Get pre-optimal X values, y and index
     X_scaled, y, index = scale_X_data(processed_data())
 
     # Return DataFrame with optimal number of Principal Components as columns
     pc_df = optimal_principal_components(X_scaled, y, index, 0.9)
+
+    #Plot Scree plot to confirm optimal number of Principal Components
+    plot_scree(X_scaled)
+
     return pc_df
+
+
 
 if __name__ == '__main__':
     main()
-
-
-# df = processed_data()
-# X = df.iloc[:, 0:-1]
-#
-# scaler = StandardScaler(copy=True, with_mean=True, with_std=True)
-#
-# X_scaled = scaler.fit_transform(X)
-# pca = PCA().fit(X_scaled)
-#
-# plt.figure(figsize=(8, 6))
-# plt.plot(np.cumsum(pca.explained_variance_ratio_))
-# plt.axhline(0.9, label='90% goal', linestyle='--', linewidth=1)
-# plt.xlabel('Number of Components')
-# plt.ylabel('Variance (%)') #for each component
-# plt.title('Pulsar Dataset Explained Variance')
-# plt.show()
-# #picking the number of principal components -- 90% percent rule!
-# for idx, var in enumerate(np.cumsum(pca.explained_variance_ratio_)):
-#     if var > 0.9:
-#         print(idx, var)
-#         break
-#
-#
-# pca = PCA(n_components=77)
-#
-# X = pca.fit_transform(X_scaled)
-# pd.DataFrame(X)
-#
-# Plotting the Cumulative Summation of the Explained Variance
