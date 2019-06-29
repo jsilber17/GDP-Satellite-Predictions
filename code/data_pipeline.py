@@ -63,11 +63,55 @@ def create_dataframe(image_dict, y_filepath):
 
     # Merge feature and target DataFrame and check for nulls
     result = pd.merge(dfX, dfy, on='cbsa', how='left')
-    nulls = result[result.isnull().any(axis=1)]
+    result = result.set_index(result.columns[0])
+
+    # Order by CBSA and GDP
+    result = result.reset_index()
+    cbsa = [result['cbsa'][i][:-5] for i in range(len(result))]
+    result['cbsa_2'] = cbsa
+    df = pd.DataFrame(result.groupby('cbsa_2').sum().sort_values(by='gdp', ascending=False).iloc[: ,-1])
+    new = pd.merge(result, df, on='cbsa_2', how='left')
+    new = new.sort_values(by='gdp_y', ascending=False).drop(['cbsa_2', 'gdp_y'],axis=1).rename(index=str, columns={"gdp_x": "gdp"}).set_index('cbsa')
+
+    # Check for nulls
+    nulls = new[new.isnull().any(axis=1)]
     if len(nulls) == 0:
-        return(result)
+        return(new)
     else:
         raise Exception("There are nulls in your data.")
+
+def test_train_split(df):
+
+    # Create X and y DataFrames
+    X = df.iloc[:, 0:-1]
+    y = pd.DataFrame(df.iloc[:, -1])
+
+    # Make every three cities train and every fourth city test
+    train, test = [], []
+    counter = 0
+    for i in range(0, len(df)):
+        if i == 0:
+            counter+=1
+            train.append(i)
+        elif counter == 9 or counter == 10:
+            test.append(i)
+            counter+=1
+        elif counter == 11:
+            test.append(i)
+            counter = 0
+        else:
+            train.append(i)
+            counter += 1
+    train = np.array(train)
+    test = np.array(test)
+
+    # Create Test Train Split
+    X_train = X.iloc[train, :]
+    X_test = X.iloc[test, :]
+    y_train = y.iloc[train, :]
+    y_test = y.iloc[test, :]
+
+    return X_train, X_test, y_train, y_test
 
 
 def main():
@@ -82,7 +126,11 @@ def main():
 
     # Return a DataFrame that has individual pixels as X columns, cities as rows, and GDP as y column
     df_images = create_dataframe(cropped_images, gdp_filepath)
-    return df_images
+
+    X_train, X_test, y_train, y_test = test_train_split(df_images)
+
+    return X_train, X_test, y_train, y_test
+
 
 if __name__ == '__main__':
     main()
