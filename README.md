@@ -19,14 +19,21 @@ It is difficult to do helpful and easily digestible data exploration having pixe
 
 Bucketing GDP values into small, medium, and large buckets (1/3 of the data for each bucket), finding the average pixel values for those buckets, and plotting them on a histogram shows strong evidence that there is a relational signal in this data. 
 
-![Signal_Histogram](img/Signal_Histogram.png)
+<p align="center">
+  <img width="600" height="600" src="img/Signal_Histogram.png">
+</p>
+
 
 ### PCA 
 Realizing that my features as pixels were hard to interpret, I decided to do Principal Component Analysis on my analysis. PCA uses orthogonal transformation to turn correlated non-linear variables into uncorrelated linear variables and is used for feature reduction in machine learning. I standardized both my train and test features using a StandardScaler and fit them on a PCA model. Once I fit them on a PCA model, I created a Scree chart to find the number of Principal Components that described 90% of the variance in my data. 
 
-![PCA](img/Scree_Plot.png)
+<p align="center">
+  <img width="600" height="600" src="img/Scree_Plot.png">
+</p>
 
 #### First Two Components
 The algorithm I used to calculate the number of Principal Components that described 90% of the variance of my data returned 59 Principal Components as features. This can be seen on the Scree plot above. I created a scatterplot of the first two PCs and colored in the data points with their respective GDP sizes (small, medium and large). As seen in the chart below, just the first two PCs begin to show a linear relationship and the GDP sizes are beginning to separate indicating a signal in the data. 
 
-![tpc](img/Two_Principal_Components.png)
+<p align="center">
+  <img width="600" height="600" src="img/Two_Principal_Components.png">
+</p>
