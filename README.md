@@ -7,7 +7,9 @@ NOAA, the National Oceanic and Atmospheric Administration, has been capturing im
 #### Google Earth Engine -- Features 
 Google Earth Engine offers an API that allows developers to use Google Earth to "detect changes, map trends, and quantify differences on the Earth's surface". I created a Javascript script that interacts with the Earth Engine API and downloads average nighttime images of 133 CBSA regions in the United States for the years 2015-2017, resulting in 399 total tiff images. I saved the images locally, uploaded in a script using glob, cropped them around their centroid into 38x38 pixel images, flattened the 2d image arrays into 1d image arrays, and put them into a Pandas DataFrame with each pixel as a feature. 
 
-![nyc state](img/nyc.png)
+<p align="center">
+  <img width="800" height="400" src="img/nyc.png">
+</p>
 
 #### Bureau of Economic Analysis -- Targets
 The Bureau of Economic Analysis has GDP numbers for all CBSA regions in the United States for the years 2011-2019. I downloaded a CSV file of the metrics from the BEA website, uploaded the file to a Pandas DataFrame, and used those values as my targets.
