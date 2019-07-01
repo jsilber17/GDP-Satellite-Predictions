@@ -8,7 +8,7 @@ NOAA, the National Oceanic and Atmospheric Administration, has been capturing im
 Google Earth Engine offers an API that allows developers to use Google Earth to "detect changes, map trends, and quantify differences on the Earth's surface". I created a Javascript script that interacts with the Earth Engine API and downloads average nighttime images of 133 CBSA regions in the United States for the years 2015-2017, resulting in 399 total tiff images. I saved the images locally, uploaded in a script using glob, cropped them around their centroid into 38x38 pixel images, flattened the 2d image arrays into 1d image arrays, and put them into a Pandas DataFrame with each pixel as a feature. 
 
 <p align="center">
-  <img width="800" height="400" src="img/nyc.png">
+  <img width="600" height="400" src="img/nyc.png">
 </p>
 
 #### Bureau of Economic Analysis -- Targets
@@ -26,6 +26,7 @@ Realizing that my features as pixels were hard to interpret, I decided to do Pri
 
 ![PCA](img/Scree_Plot.png)
 
+#### First Two Components
 The algorithm I used to calculate the number of Principal Components that described 90% of the variance of my data returned 59 Principal Components as features. This can be seen on the Scree plot above. I created a scatterplot of the first two PCs and colored in the data points with their respective GDP sizes (small, medium and large). As seen in the chart below, just the first two PCs begin to show a linear relationship and the GDP sizes are beginning to separate indicating a signal in the data. 
 
 ![tpc](img/Two_Principal_Components.png)
