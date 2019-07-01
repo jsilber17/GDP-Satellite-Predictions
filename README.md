@@ -7,7 +7,7 @@ NOAA, the National Oceanic and Atmospheric Administration, has been capturing im
 #### Google Earth Engine -- Features 
 Google Earth Engine offers an API that allows developers to use Google Earth to "detect changes, map trends, and quantify differences on the Earth's surface". I created a Javascript script that interacts with the Earth Engine API and downloads average nighttime images of 133 CBSA regions in the United States for the years 2015-2017, resulting in 399 total tiff images. I saved the images locally, uploaded in a script using glob, cropped them around their centroid into 38x38 pixel images, flattened the 2d image arrays into 1d image arrays, and put them into a Pandas DataFrame with each pixel as a feature. 
 
-![nyc](img/nyc.png)
+![nyc state](img/nyc.png)
 
 #### Bureau of Economic Analysis -- Targets
 The Bureau of Economic Analysis has GDP numbers for all CBSA regions in the United States for the years 2011-2019. I downloaded a CSV file of the metrics from the BEA website, uploaded the file to a Pandas DataFrame, and used those values as my targets.
@@ -19,7 +19,11 @@ Bucketing GDP values into small, medium, and large buckets (1/3 of the data for 
 
 ![Signal_Histogram](img/Signal_Histogram.png)
 
+### PCA 
+Realizing that my features as pixels were hard to interpret, I decided to do Principal Component Analysis on my analysis. PCA uses orthogonal transformation to turn correlated non-linear variables into uncorrelated linear variables and is used for feature reduction in machine learning. I standardized both my train and test features using a StandardScaler and fit them on a PCA model. Once I fit them on a PCA model, I created a Scree chart to find the number of Principal Components that described 90% of the variance in my data. 
 
-Realizing that my features as pixels were hard to interpret and 
+![PCA](img/Scree_Plot.png)
 
+The algorithm I used to calculate the number of Principal Components that described 90% of the variance of my data returned 59 Principal Components as features. This can be seen on the Scree plot above. I created a scatterplot of the first two PCs and colored in the data points with their respective GDP sizes (small, medium and large). As seen in the chart below, just the first two PCs begin to show a linear relationship and the GDP sizes are beginning to separate indicating a signal in the data. 
 
+![tpc](img/Two_Principal_Components.png)
