@@ -7,8 +7,9 @@ from sklearn.linear_model import Ridge
 from sklearn.linear_model import LinearRegression
 from sklearn.linear_model import ElasticNet
 from sklearn.model_selection import cross_val_score
-
-
+from sklearn.model_selection import LeaveOneOut
+from sklearn import metrics
+import statsmodels.api as sm
 
 # def image_feature_engineering(df_pca, df_processed, y):
 #     """ Create new features for image data """
@@ -42,11 +43,14 @@ from sklearn.model_selection import cross_val_score
 def LassoRegression(X_train, y_train, cv):
 
     # Cross validate to find the optimal alpha
-    # cv_scores = [cross_val_score(ElasticNet(alpha), X_train, y_train, scoring='r2', cv=cv).mean() for alpha in np.arange(0, 100, 10)]
-    cv_scores = cross_val_score(Lasso(6000), X_train, y_train, scoring='r2', cv=5)
+    # nmae = cross_val_score(Lasso(), X_train, y_train, scoring='neg_mean_absolute_error', cv=5)
+    r2 = cross_val_score(Lasso(), X_train[:, 0:2], np.log(y_train), scoring='r2', cv=2).mean()
+    # mse = cross_val_score(Lasso(), X_train, np.log(y_train), scoring='neg_mean_squared_error', cv=5)
+    # rsme = cross_val_score(Lasso(), X_train, np.log(y_train), scoring='neg_mean_squared_error', cv=5)
+    # r2 = cross_val_score(Lasso(), X_train, np.log(y_train), scoring='neg_mean_squared_error', cv=5)
 
 
-    return cv_scores
+    return r2
 
 
 
@@ -54,8 +58,19 @@ def main():
     X_train, X_test, y_train, y_test = pca_data()
     cv_scores = LassoRegression(X_train, y_train, 5)
 
-    print(cv_scores)
+    print (cv_scores)
 
 
 if __name__ == '__main__':
     main()
+
+# y_train
+#
+# X_train, X_test, y_train, y_test = pca_data()
+# x = Lasso()
+# x.fit(X_train, np.log(y_train))
+# x.score(X_train, np.log(y_train))
+# predictions = x.predict(np.array(X_test))
+# metrics.mean_squared_log_error(predictions, np.log(y_test))
+# np.sqrt(metrics.mean_squared_error(np.log(y_test), predictions))
+# metrics.r2_score(np.log(y_test), predictions)

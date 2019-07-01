@@ -69,8 +69,12 @@ def main():
     # Get data from previous function
     X_train = processed_data()[0]
     X_test = processed_data()[1]
-    y_train = processed_data()[2]
-    y_test = processed_data()[3]
+    y_train = np.array(processed_data()[2])
+    y_test = np.array(processed_data()[3])
+
+    y_train = np.array(y_train).reshape(len(y_train))
+    y_test = np.array(y_test).reshape(len(y_test))
+
 
     # Standardize X_train and X_test
     X_train_std, X_test_std = standardize_X_data(X_train, X_test)

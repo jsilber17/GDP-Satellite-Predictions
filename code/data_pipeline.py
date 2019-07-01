@@ -83,8 +83,8 @@ def create_dataframe(image_dict, y_filepath):
 def test_train_split(df):
 
     # Create X and y DataFrames
-    X = df.iloc[:, 0:-1]
-    y = pd.DataFrame(df.iloc[:, -1])
+    X = df.iloc[0:, 0:-1]
+    y = pd.DataFrame(df.iloc[0:, -1])
 
     # Make every three cities train and every fourth city test
     train, test = [], []
