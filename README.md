@@ -26,7 +26,7 @@ Bucketing GDP values into small, medium, and large buckets (1/3 of the data for 
 #### Log y Transformation 
 For a regression problem, I always take the natural logarith of my targets, and see if taking the logarithm helps retrieve a linear model. As seen below, the relationship between the CBSAs and GDP is an exponential relationship, so taking the logartihm of GDP transforms the relationship to a negative linear relationship. 
 
-![y_line_chart]("img/y_line_chart.png") ![y_transformed]("img/y_transformed.png")
+<img src="img/y_line_chart.png" width="300" height="300"> <img src="img/y_transformed.png" width="300" height="300">
 
 ### PCA 
 Realizing that my features as pixels were hard to interpret, I decided to do Principal Component Analysis on my analysis. PCA uses orthogonal transformation to turn correlated non-linear variables into uncorrelated linear variables and is used for feature reduction in machine learning. I standardized both my train and test features using a StandardScaler and fit them on a PCA model. Once I fit them on a PCA model, I created a Scree chart to find the number of Principal Components that described 90% of the variance in my data.
