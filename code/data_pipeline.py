@@ -4,7 +4,7 @@ import glob
 import cv2
 import re
 from scipy.ndimage.measurements import center_of_mass
-
+from skimage import io
 
 def read_in_and_tag_images(filepath, search_string):
     """Read in images from a directory and return a list of image arrays and their labels"""
@@ -57,9 +57,26 @@ def create_dataframe(image_dict, y_filepath):
     col_headers.insert(0, 'cbsa')
     col_headers.remove('pcity')
     dfX.columns = col_headers
+    dfX = dfX.set_index("cbsa")
+
+    # Average Pixel Intensity
+    dfX['average_pixel_intensity'] = [sum(dfX.iloc[cbsa, 0:4332])/len(dfX.columns[0:4332]) for cbsa in range(len(dfX))]
+
+    # Pixel max_pixel_intensity
+    dfX['pixel_intensity'] = [sum(dfX.iloc[cbsa, 0:4332]) for cbsa in range(len(dfX))]
+
+    # Max Pixel Intensity
+    dfX['max_pixel_intensity'] = [max(dfX.iloc[cbsa, 0:4332]) for cbsa in range(len(dfX))]
 
     # Create Dataframe of targets
     dfy = pd.read_csv(y_filepath)
+
+    # Creating and dummying GDP sizes
+    below, above = np.percentile(dfy['gdp'], [(100/3), (200/3)])
+    dfX['gdp_size'] = np.where(dfy['gdp'] < below, 'small', (np.where(dfy['gdp'] > above, 'large', 'medium')))
+    dfX['small_gdp'] = np.where(dfX['gdp_size'] == 'small', 1, 0)
+    dfX['medium_gdp'] = np.where(dfX['gdp_size'] == 'medium', 1, 0)
+    dfX.drop('gdp_size', axis=1, inplace=True)
 
     # Merge feature and target DataFrame and check for nulls
     result = pd.merge(dfX, dfy, on='cbsa', how='left')
@@ -79,6 +96,8 @@ def create_dataframe(image_dict, y_filepath):
         return(new)
     else:
         raise Exception("There are nulls in your data.")
+
+
 
 def test_train_split(df):
 
@@ -131,6 +150,51 @@ def main():
 
     return X_train, X_test, y_train, y_test
 
-
 if __name__ == '__main__':
     main()
+
+main()
+
+
+
+
+
+# X_train, X_test, y_train, y_test = test_train_split(df_images)
+#
+# from sklearn.model_selection import cross_val_score
+# from sklearn.linear_model import Lasso
+#
+# x = cross_val_score(estimator=Lasso(), X=X_train, y=y_train, scoring='neg_mean_squard_error', cv=10)
+# x
+#
+# from sklearn.model_selection import KFold
+#
+# from sklearn.metrics import mean_squared_error
+#
+#
+# from sklearn.moel_selection import cross_validate
+#
+# def crossval(X, y, K, n_estimators):
+#     X = np.array(X)
+#     y = np.array(y)
+#     rsme_list = []
+#     x = KFold(n_splits=K)
+#     clf = RandomForestRegressor(n_estimators)
+#     for train, test in x.split(X):
+#         clf.fit(X[train], y[train])
+#         test_predicted = clf.predict(X[test])
+#         rsme_list.append(np.sqrt(mean_squared_error(test_predicted, y[test])))
+#         avg_val = np.array(rsme_list).mean()
+#     return avg_val
+#
+#
+# for i in range(100, 1000, 100):
+#     avg_val = []
+#     avg_val.append(crossval(X_train, y_train, 10, i))
+# x = t
+#
+# for train_index, test_index in kf.split(X_train):
+#     # print(len(test_index), len(train_index))
+#     # print("TRAIN:", train_index, "TEST:", test_index)
+#     X_tr, X_te = np.array(X_train)[train_index], np.array(X_train)[test_index]
+#     y_tr, y_te = np.array(y_train)[train_index], np.array(y_train)[test_index]
