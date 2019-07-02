@@ -23,9 +23,11 @@ Bucketing GDP values into small, medium, and large buckets (1/3 of the data for 
   <img width="600" height="600" src="img/Signal_Histogram.png">
 </p>
 
+#### Log y Transformation 
+For a regression problem, I always take the natural logarith of my targets, and see if taking the logarithm helps retrieve a linear model. As seen below, the relationship between the CBSAs and GDP is an exponential relationship, so taking the logartihm of GDP transforms the relationship to a negative linear relationship. 
 
 ### PCA 
-Realizing that my features as pixels were hard to interpret, I decided to do Principal Component Analysis on my analysis. PCA uses orthogonal transformation to turn correlated non-linear variables into uncorrelated linear variables and is used for feature reduction in machine learning. I standardized both my train and test features using a StandardScaler and fit them on a PCA model. Once I fit them on a PCA model, I created a Scree chart to find the number of Principal Components that described 90% of the variance in my data. 
+Realizing that my features as pixels were hard to interpret, I decided to do Principal Component Analysis on my analysis. PCA uses orthogonal transformation to turn correlated non-linear variables into uncorrelated linear variables and is used for feature reduction in machine learning. I standardized both my train and test features using a StandardScaler and fit them on a PCA model. Once I fit them on a PCA model, I created a Scree chart to find the number of Principal Components that described 90% of the variance in my data.
 
 <p align="center">
   <img width="600" height="600" src="img/Scree_Plot.png">
@@ -37,3 +39,12 @@ The algorithm I used to calculate the number of Principal Components that descri
 <p align="center">
   <img width="600" height="600" src="img/Two_Principal_Components.png">
 </p>
+
+### Modeling
+
+#### Linear Regression 
+Linear regression is always a good start for regression prediction, because the results are interpretable and there is minimal hyperparameter tuning involved. I used sklearns Linear Regression and Lasso Regression to do my linear modeling, and used a cross validation function that myself. 
+
+##### Lasso with PCA Components 
+To begin my modeling, I used a Lasso Regression model and used 61 Principal Components as my features (which described 90% of the variation in my data). I used cross validation to find the optimal alpha value for my model and then trained my data. I ended up with a training r2 score of 98% and a test r2 score of 18%... obvious overfitting. With these results, I realized that my model was trying to descibe noise in the data and not the underlying relationship of the features and the target. Knowing that the first Principal Component of my data described >30% of the variation in my data, I decided to use a smaller amount of Principal Components for next model. 
+
