@@ -30,6 +30,7 @@ def crossval(X, y, K, model):
 # Load in Data
 X_train, X_test, y_train, y_test = pca_data()
 
+
 # Use vanilla RandomForest model
 rf = RandomForestRegressor(n_estimators=300) # setting trees to a large number
 
@@ -69,11 +70,11 @@ rf2_cv #0.655
 # Max Depth
 md = [crossval(X_train[:, 0:10], y_train, 10, RandomForestRegressor(n_estimators=300, max_depth=num)) for num in param_grid['max_depth']]
 max_depth = param_grid['max_depth'][md.index(np.min(md))]
-
+max_depth
 # Max Features
 mf = [crossval(X_train[:, 0:10], y_train, 10, RandomForestRegressor(n_estimators=300, max_features=num)) for num in param_grid['max_features']]
 max_features = param_grid['max_features'][mf.index(np.min(mf))]
-
+max_features
 # Test New Model
 rf3 = RandomForestRegressor(n_estimators=300, max_depth=max_depth, max_features=max_features)
 
@@ -81,11 +82,15 @@ rf3_cv = crossval(X_train[:, 0:10], y_train, 10, rf3)
 rf3_cv #0.69
 
 
-processed_data()[0]
+# Use 5 PCA Components on Test Data
+model = rf2.fit(X_train[:, 0:5], y_train)
+y_hat_train = model.predict(X_train[:, 0:5])
+r2_score(np.exp(y_train), np.exp(y_hat_train))
+np.sqrt(mean_squared_error(np.exp(y_train), np.exp(y_hat_train)))
 
-
-
-
+y_hat_test = rf2.predict(X_test[:, 0:5])
+np.sqrt(mean_squared_error(np.exp(y_test), np.exp(y_hat_test)))
+r2_score(np.exp(y_test), np.exp(y_hat_test))
 
 
 def main():
@@ -93,45 +98,3 @@ def main():
     rf = RandomForestRegression()
 if __name__ == '__main__':
     main()
-
-
-
-X_train, X_test, y_train, y_test = pca_data()
-X_train_2, X_test_2, y_train_2, y_test_2 = second_test_train_split(X_train, y_train)
-
-
-
-
-# ne = []
-# for num in range(1, 1000, 100):
-#     rf = RandomForestRegressor(n_estimators=num)
-#     rf.fit(X_train_2, y_train_2)
-#     y_hat = np.exp(rf.predict(X_train_2))
-#     ne.append(np.sqrt(mean_squared_error(np.exp(y_train_2), y_hat)))
-# max_ne = np.max(ne)
-# n_estimators = (ne.index(max_ne) + 1)*100
-#
-# mf = []
-# for num in range(1, X_train_2.shape[1]):
-#     rf = RandomForestRegressor(max_features=num)
-#     rf.fit(X_train_2, y_train_2)
-#     y_hat = np.exp(rf.predict(X_train_2))
-#     mf.append(np.sqrt(mean_squared_error(np.exp(y_train_2), y_hat)))
-# max_mf = np.max(mf)
-# max_features = mf.index(max_mf) + 1
-
-
-rf = RandomForestRegressor(n_estimators=100, max_features=2)
-rf.fit(X_train_2, y_train_2)
-yt = np.exp(rf.predict(X_train_2))
-ytt = np.exp(rf.predict(X_test_2))
-np.sqrt(mean_squared_error(y_train_2, yt))
-# np.sqrt(mean_squared_error(y_test_2, ytt))
-
-
-
-# y_hat = np.exp(rf.predict(np.array(X_test)))
-# r2_score(np.exp(y_test), y_hat)
-# mean_squared_error(np.exp(y_test), y_hat)
-# np.sqrt(mean_squared_error(np.exp(y_test), y_hat))
-# mean_absolute_error(np.exp(y_test), y_hat)

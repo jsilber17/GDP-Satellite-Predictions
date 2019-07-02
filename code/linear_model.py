@@ -55,6 +55,7 @@ lasso2_cv = crossval(X_train[:, 0:5], y_train, 10, Lasso(alpha=a)) # 0.47
 # Test on Train set
 model = lasso2.fit(X_train[:, 0:5], y_train)
 y_hat_train = lasso2.predict(X_train[:, 0:5])
+r2_score(np.exp(y_train), np.exp(y_hat_train))
 np.sqrt(mean_squared_error(np.exp(y_train), np.exp(y_hat_train)))
 
 # Test on Test set
