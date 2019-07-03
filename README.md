@@ -75,5 +75,11 @@ RMSE | $70,589 | $104,158
 
 ### Conclusions 
 #### Problems with the data 
-*The dataset only has 400 pictures which is not enough data; can lead to overfitting and unbalanced dataset. 
-*The images do not contain the full CBSA area which can make some smaller CBSA areas seem larger than they are 
+* The dataset only has 400 pictures which is not enough data; can lead to overfitting and unbalanced dataset
+* Further investigation into my cross validation function 
+* The images do not contain the full CBSA area which can make some smaller CBSA areas seem larger than they are
+
+#### Next Steps 
+* The models are able to predict within 100,000 million dollars of GDP on a scale of trillions of dollars (1 million millions)
+* Automate the Earth Engine process to get a larger dataset of images 
+* Create a Convolutional Neural Net for image prediction 
