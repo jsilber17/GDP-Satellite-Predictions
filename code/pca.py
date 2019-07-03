@@ -79,21 +79,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-# def plot_scree(X_scaled):
-#     """ Plot a Scree plot to confirm the optimal number of Principal Components
-#         from previous calculations"""
-#
-#     # Fit already standardized X data to a vanilla PCA model
-#     pca = PCA()
-#     X_pca = pca.fit(X_scaled)
-#
-#     #Plot scree plot
-#     sns.set_style("white")
-#     fig, ax = plt.subplots(figsize=(8, 8))
-#     sns.lineplot(x=np.arange(len(pca.explained_variance_ratio_)), y=np.cumsum(pca.explained_variance_ratio_))
-#     sns.lineplot(x=np.arange(len(pca.explained_variance_ratio_)), y=0.9)
-#     ax.set_title('Scree Plot For Principal Components', size=20, weight='bold')
-#     ax.set_ylabel('Proportion of Explained Variance', size=18)
-#     ax.set_xlabel('Number of Principal Components', size=18)
-#     ax.legend(labels=(['Cumulative Sum of Variance', 'Variance Threshold']), loc='lower right', prop={'size': 15})
