@@ -93,8 +93,34 @@ np.sqrt(mean_squared_error(np.exp(y_test), np.exp(y_hat_test)))
 r2_score(np.exp(y_test), np.exp(y_hat_test))
 
 
-def main():
-    X_train, X_test, y_train, y_test = pca_data()
-    rf = RandomForestRegression()
-if __name__ == '__main__':
-    main()
+
+
+
+# Engineered Features
+X_train, X_test, y_train, y_test = processed_data()
+X_train = X_train.iloc[:, 4332:]
+X_test = X_test.iloc[:, 4332:]
+
+# Defining the model
+rf = RandomForestRegressor(max_depth=2)
+
+#Cross Validation
+cv_scores = crossval(X_train, np.log(y_train), 10, rf)
+cv_scores
+
+
+model = rf.fit(X_train, np.log(y_train))
+y_hat_train = model.predict(X_train)
+np.sqrt(mean_squared_error(y_train, np.exp(y_hat_train)))
+r2_score(y_train, np.exp(y_hat_train))
+
+y_hat_test = rf.predict(X_test)
+np.sqrt(mean_squared_error(y_test, np.exp(y_hat_test)))
+r2_score(y_test, np.exp(y_hat_test))
+
+
+# def main():
+#     X_train, X_test, y_train, y_test = pca_data()
+#     rf = RandomForestRegression()
+# if __name__ == '__main__':
+#     main()
