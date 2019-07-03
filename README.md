@@ -48,5 +48,32 @@ The algorithm I used to calculate the number of Principal Components that descri
 Linear regression is always a good start for regression prediction, because the results are interpretable and there is minimal hyperparameter tuning involved. I used sklearns Linear Regression and Lasso Regression to do my linear modeling, and used a cross validation function that myself. 
 
 ##### Lasso with PCA Components 
-To begin my modeling, I used a Lasso Regression model and used 61 Principal Components as my features (which described 90% of the variation in my data). I used cross validation to find the optimal alpha value for my model and then trained my data. I ended up with a training r2 score of 98% and a test r2 score of 18%... obvious overfitting. With these results, I realized that my model was trying to descibe noise in the data and not the underlying relationship of the features and the target. Knowing that the first Principal Component of my data described >30% of the variation in my data, I decided to use a smaller amount of Principal Components for next model. 
+To begin my modeling, I used a Lasso Regression model and used 61 Principal Components as my features (which described 90% of the variation in my data). I used cross validation to find the optimal alpha value for my model and then trained my data. I ended up with a training r2 score of 98% and a test r2 score of 18%... obvious overfitting. With these results, I realized that my model was trying to descibe noise in the data and not the underlying relationship of the features and the target. Knowing that the first Principal Component of my data described >30% of the variation in my data, I decided to use a smaller amount of Principal Components for next model. For the next model, I tested out models with Principal Components of 15, 10, and 5. Five principal components was the winner! Below are the training and testing R2 and root mean squared error values for my final Lasso Regression model. 
 
+Lasso with PCA | Train | Test
+--- | --- | --- 
+R2 | 0.5 |  0.33
+RMSE | $153,302 | $96,418
+
+##### Lasso with Engineered Features 
+PCA is great for dimensionality reduction, but I decided to engineer features for my model and take out the PCA features to see how my engineered features would describe the variance of the data. Below are the results of my feature engineered Lasso model: 
+
+Lasso with Feature Engineering | Train | Test
+--- | --- | --- 
+R2 | 0.49 |  0.34
+RMSE | $153,667 | $95,918
+
+The results are very similar!
+
+#### Random Forest 
+For my Random Forest modeling, I could not use GridSearch so tuning the hyperparameters of the data was very difficult. I hypertuned three parameters manually: n_estimators, max_depth, and max_features. I found that n_estimators=300, max_depth=100, max_features=5. Again, I tested out the models with Principal Components of 15, 10, 5, and 5 returned me the best model. However, with PC=5, the data was very overfit and returned a much higher train R2 than the test R2. I will continue working with the Random Forest model to understand why this model is underfitting in the future. Below are the results: 
+
+Random Forest | Train | Test
+--- | --- | --- 
+R2 | 0.89 |  0.22
+RMSE | $70,589 | $104,158
+
+### Conclusions 
+#### Problems with the data 
+*The dataset only has 400 pictures which is not enough data; can lead to overfitting and unbalanced dataset. 
+*The images do not contain the full CBSA area which can make some smaller CBSA areas seem larger than they are 
