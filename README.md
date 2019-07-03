@@ -79,7 +79,7 @@ RMSE | $70,589 | $104,158
 * Further investigation into my cross validation function 
 * The images do not contain the full CBSA area which can make some smaller CBSA areas seem larger than they are
 
-#### Next Steps 
-* The models are able to predict within 100,000 million dollars of GDP on a scale of trillions of dollars (1 million millions)
+#### Next Steps and Results
+* The models are able to predict within 100 billion dollars of GDP on a scale of trillions of dollars
 * Automate the Earth Engine process to get a larger dataset of images 
 * Create a Convolutional Neural Net for image prediction 
