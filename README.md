@@ -24,7 +24,7 @@ Bucketing GDP values into small, medium, and large buckets (1/3 of the data for 
 </p>
 
 #### Log y Transformation 
-For a regression problem, I always take the natural logarith of my targets, and see if taking the logarithm helps retrieve a linear model. As seen below, the relationship between the CBSAs and GDP is an exponential relationship, so taking the logartihm of GDP transforms the relationship to a negative linear relationship. 
+For a regression problem, I always take the natural logarithm of my targets, and see if taking the logarithm helps retrieve a linear model. As seen below, the relationship between the CBSAs and GDP is an exponential relationship, so taking the logartihm of GDP transforms the relationship to a negative linear relationship. 
 
 <img src="img/y_line_chart.png" width="300" height="300"> <img src="img/y_transformed.png" width="300" height="300">
 
